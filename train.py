@@ -15,7 +15,7 @@ y = data['quality']
 
 X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2, random_state=1234)
 
-model = RandomForestRegressor(random_state=1234)
+model = LinearRegression()
 model.fit(X_train,y_train)
 
 pred = model.predict(X_test)
@@ -26,11 +26,11 @@ r2 = r2_score(y_test,pred)
 print("MSE: ",mse)
 print("R2 score: ",r2)
 
-joblib.dump(model,"output/winequality-linearmodel.pkl")
+joblib.dump(model,"output/model.pkl")
 metrics = {
     "MSE" : mse,
     "R2_Score": r2,
 }
 
-with open("output/winequality-linearmodel_metrics.json","w") as file:
+with open("output/metrics.json","w") as file:
     json.dump(metrics,file)

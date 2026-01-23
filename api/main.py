@@ -4,7 +4,7 @@ import numpy as np
 import joblib
 
 app = FastAPI()
-model = joblib.load("winequality-linearmodel.pkl")
+model = joblib.load("model.pkl")
 
 class WineInput(BaseModel):
     fixed_acidity: float
@@ -37,6 +37,7 @@ def predict(request: WineInput):
     prediction = model.predict(inp)
 
     return {
-        "message": "Request successful",
-        "prediction": float(prediction[0])
+        "name":"Arjun Sreenivas",
+        "roll_no": "2022BCS0060",
+        "wine_quality": float(prediction[0])
     }
