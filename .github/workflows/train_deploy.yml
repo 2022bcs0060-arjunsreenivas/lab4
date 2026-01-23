@@ -109,7 +109,7 @@ jobs:
       - name: Update Best Metrics
         if: steps.compare.outputs.deploy == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GTHUB_TOKEN }}
         run: |
           gh variable set BEST_R2_SCORE --body "${{ needs.train.outputs.r2_score }}"
           gh variable set BEST_MSE --body "${{ needs.train.outputs.mse }}"
