@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import json
+import os
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Ridge
@@ -26,6 +27,7 @@ r2 = r2_score(y_test,pred)
 print("MSE: ",mse)
 print("R2 score: ",r2)
 
+os.makedirs("output", exist_ok=True)
 joblib.dump(model,"output/model.pkl")
 metrics = {
     "MSE" : mse,
