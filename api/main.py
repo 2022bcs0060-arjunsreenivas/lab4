@@ -41,3 +41,7 @@ def predict(request: WineInput):
         "roll_no": "2022BCS0060",
         "wine_quality": float(prediction[0])
     }
+
+@app.get("/health")
+def health():
+    return {"success": "eda healthy kutta"}

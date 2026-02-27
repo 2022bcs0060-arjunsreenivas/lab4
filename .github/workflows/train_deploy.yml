@@ -83,23 +83,23 @@ jobs:
       - name: Install bc (for float comparison)
         run: sudo apt-get update && sudo apt-get install -y bc
 
-      - name: Compare Metrics
-        id: compare
-        run: |
-          CUR_R2=${{ needs.train.outputs.r2_score }}
-          CUR_MSE=${{ needs.train.outputs.mse }}
-          BEST_R2=${{ vars.BEST_R2_SCORE }}
-          BEST_MSE=${{ vars.BEST_MSE }}
+      # - name: Compare Metrics
+      #   id: compare
+      #   run: |
+      #     CUR_R2=${{ needs.train.outputs.r2_score }}
+      #     CUR_MSE=${{ needs.train.outputs.mse }}
+      #     BEST_R2=${{ vars.BEST_R2_SCORE }}
+      #     BEST_MSE=${{ vars.BEST_MSE }}
 
-          echo "Current R2: $CUR_R2 | Best R2: $BEST_R2"
-          echo "Current MSE: $CUR_MSE | Best MSE: $BEST_MSE"
+      #     echo "Current R2: $CUR_R2 | Best R2: $BEST_R2"
+      #     echo "Current MSE: $CUR_MSE | Best MSE: $BEST_MSE"
 
-          if (( $(echo "$CUR_R2 <= $BEST_R2" | bc -l) )) || (( $(echo "$CUR_MSE >= $BEST_MSE" | bc -l) )); then
-            echo "2022BCS0060----Metric did not improve"
-            exit 0
-          fi
+      #     if (( $(echo "$CUR_R2 <= $BEST_R2" | bc -l) )) || (( $(echo "$CUR_MSE >= $BEST_MSE" | bc -l) )); then
+      #       echo "2022BCS0060----Metric did not improve"
+      #       exit 0
+      #     fi
 
-          echo "deploy=true" >> $GITHUB_OUTPUT
+      #     echo "deploy=true" >> $GITHUB_OUTPUT
 
       - name: Login to DockerHub
         if: steps.compare.outputs.deploy == 'true'
@@ -115,10 +115,10 @@ jobs:
           docker build -t $IMAGE .
           docker push $IMAGE
 
-      - name: Update Best Metrics
-        if: steps.compare.outputs.deploy == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GTHUB_TOKEN }}
-        run: |
-          gh variable set BEST_R2_SCORE --body "${{ needs.train.outputs.r2_score }}"
-          gh variable set BEST_MSE --body "${{ needs.train.outputs.mse }}"
+      # - name: Update Best Metrics
+      #   if: steps.compare.outputs.deploy == 'true'
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GTHUB_TOKEN }}
+      #   run: |
+      #     gh variable set BEST_R2_SCORE --body "${{ needs.train.outputs.r2_score }}"
+      #     gh variable set BEST_MSE --body "${{ needs.train.outputs.mse }}"
